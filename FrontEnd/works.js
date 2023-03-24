@@ -1,3 +1,6 @@
+let gallery = document.querySelector('.gallery');
+
+// Get and display works from API
 let works = localStorage.getItem('works');
 
 if (works !== null) {
@@ -6,7 +9,7 @@ if (works !== null) {
     getWorks();
 }
 
-displayWorks();
+displayWorks(works);
 
 async function getWorks() {
     let res = await fetch('http://localhost:5678/api/works');
@@ -16,10 +19,8 @@ async function getWorks() {
     localStorage.setItem('works', works);
 }
 
-function displayWorks() {
+function displayWorks(works) {
     for( let i=0; i<works.length; i++) {
-        const gallery = document.querySelector('.gallery');
-
         const figure = document.createElement('figure');
         gallery.appendChild(figure);
 
@@ -34,4 +35,39 @@ function displayWorks() {
     }
 }
 
+// Sort works with filters
+let allProjectsBtn = document.querySelector('.all-btn');
+allProjectsBtn.addEventListener('click', () => {    
+    gallery.innerHTML = '';
+    displayWorks(works);
+
+    removeActiveClass()
+    allProjectsBtn.classList.add('active');
+})
+let objectsBtn = document.querySelector('.objects-btn');
+sortWorks(objectsBtn, 'Objets');
+
+let apartmentsBtn = document.querySelector('.apartments-btn');
+sortWorks(apartmentsBtn, 'Appartements');
+
+let hotelsBtn = document.querySelector('.hotels-btn');
+sortWorks(hotelsBtn, 'Hotels & restaurants');
+
+function sortWorks( btn, category) {
+    btn.addEventListener('click', () => {
+        let sortWorks = works.filter(works => works.category.name == category);
+        gallery.innerHTML = '';
+        displayWorks(sortWorks);
+    
+        removeActiveClass()
+        btn.classList.add('active');
+    })
+}
+
+function removeActiveClass() {
+    let filtersBtns = document.querySelectorAll('.filters-btn');
+    for( let i=0; i<filtersBtns.length; i++) {
+        filtersBtns[i].classList.remove('active')
+    }
+}
 // localStorage.clear();
