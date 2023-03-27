@@ -1,4 +1,4 @@
-document.querySelector('#authentification-form').addEventListener('submit', (e) => {
+document.querySelector('#login').addEventListener('submit', (e) => {
     e.preventDefault();
 
     let formData = {

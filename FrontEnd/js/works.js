@@ -71,3 +71,14 @@ function removeActiveClass() {
         filtersBtns[i].classList.remove('active')
     }
 }
+
+let connexionParams = new URLSearchParams(document.location.search);
+let connexionStatus = connexionParams.get('connected');
+
+if(connexionStatus === '1') {
+    let updateBtns = document.querySelectorAll('.update-btn');
+    
+    for( let i=0; i<updateBtns.length; i++) {
+        updateBtns[i].classList.remove('hidden')
+    }
+}
