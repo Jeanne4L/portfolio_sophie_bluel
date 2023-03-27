@@ -5,11 +5,12 @@ let works = localStorage.getItem('works');
 
 if (works !== null) {
     works = JSON.parse(works);
+    displayWorks(works);
 } else {
     getWorks();
+    displayWorks(works);
 }
 
-displayWorks(works);
 
 async function getWorks() {
     let res = await fetch('http://localhost:5678/api/works');
@@ -70,4 +71,3 @@ function removeActiveClass() {
         filtersBtns[i].classList.remove('active')
     }
 }
-// localStorage.clear();
