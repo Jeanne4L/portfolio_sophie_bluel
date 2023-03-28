@@ -29,6 +29,9 @@
                 </ul>
             </nav>
         </header>
+
+        <div class="overlay hidden"></div>
+
         <main>
             <section id="introduction">
                 <figure>
@@ -48,11 +51,25 @@
             <section id="portfolio">
                 <div class="portfolio__title">
                     <h2>Mes Projets</h2>
-                    <a href="#" class="update-btn hidden">
+                    <a href="#modal" class="update-btn hidden">
                         <i class="fa-regular fa-pen-to-square"></i>
                         modifier
                     </a>
                 </div>
+
+                <aside id="modal" class="hidden" tabindex="-1" role="dialog" aria-hidden="true" aria-modal="true" aria-labelledby="modal__title">
+                    <i class="fa-solid fa-xmark js-close-modal" tabindex="0" role="button" aria-label="fermer la fenêtre"></i>
+                    <div class="modal__container">
+                        <h3 id="modal__title">Galerie photo</h3>
+                        <div class="modal__gallery"></div>
+                        <hr>
+                        <div class="modal__btns">
+                            <button class="btn">Ajouter une photo</button>
+                            <button class="alert">Supprimer la galerie</button>
+                        </div>
+                    </div>
+                </aside>
+
                 <div class="filters">
                     <button class="filters-btn all-btn active">Tous</button>
                     <button class="filters-btn objects-btn">Objets</button>

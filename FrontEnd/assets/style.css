@@ -61,6 +61,13 @@ header {
 section {
 	margin: 50px 0
 }
+input[type=submit], button {
+    font-family: 'Syne';
+    font-weight: bold;
+}
+input[type="submit"]:hover, button:hover, li:hover, li a:hover {
+    cursor: pointer;
+}
 
 h1{
 	display: flex;
@@ -96,7 +103,6 @@ nav li {
 
 li:hover, li a:hover {
 	color: #B1663C;
-    cursor: pointer;
 }
 
 a {
@@ -147,13 +153,97 @@ header li img {
 	margin-right: 20px;
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+#modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    width: 40%;
+    height: 70vh;
+    min-width: 450px;
+    padding: 20px;
+    text-align: right;
+    border-radius: 10px;
+    overflow: auto;
+}
+.modal__container {
+    width: 85%;
+    margin: auto;
+    text-align: center;
+}
+#modal .fa-xmark {
+    font-size: 1.1rem;
+}
+#modal h3 {
+    font-size: 1.3rem;
+    margin-top: 10px;
+}
+.modal__gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 5px;
+    margin: 30px 0;
+}
+.modal__gallery figure {
+    position: relative;
+    margin-bottom: 10px;
+}
+.modal__gallery span {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.modal__gallery i {
+    background-color: black;
+    color: white;
+    padding: 4px;
+    border-radius: 3px;
+}
+.modal__gallery .grow-up {
+    opacity: 0;
+}
+.modal__gallery figure:hover > figcaption .grow-up {
+    opacity: 1;
+}
+.modal__gallery img {
+    width: 100%;
+}
+.modal__gallery button {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    text-align: left;
+    width: 100%;
+}
+.modal__btns {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.modal__btns button {
+    border: none;
+    padding: 10px 20px;
+}
+.modal__btns button.alert {
+    margin: 0;
+    border: none;
+    background-color: transparent;
+}
+
 .filters {
     text-align: center;
     margin-bottom: 30px;
 }
 .filters-btn {
-    font-family: 'Syne';
-    font-weight: bold;
     color: #1D6154;
     margin: 5px;
     border: solid 1px #1D6154;
@@ -161,13 +251,11 @@ header li img {
     border-radius: 30px;
     padding: 5px 10px;
 }
-.filters-btn:hover {
-    cursor: pointer;
-}
 .active {
     background-color: #1D6154;
     color: white;
 }
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -176,13 +264,12 @@ header li img {
 	grid-row-gap: 20px;
     padding-bottom: 50px;
 }
-
 .gallery img {
 	width: 100%;
 }
 #contact {
 	width: 50%;
-margin: auto;
+    margin: auto;
 }
 #contact > * {
 	text-align: center;
@@ -217,9 +304,7 @@ margin: auto;
     border: solid 2px #1D6154;
 }
 
-input[type="submit"]{
-	font-family: 'Syne';
-	font-weight: 700;
+input[type="submit"], .modal__btns button:not(.modal__btns button.alert) {
 	color: white;
 	background-color: #1D6154;
 	margin : 2em auto ;
@@ -241,7 +326,7 @@ footer nav ul {
 .form-error, .link {
     text-align: center;
 }
-.error {
+.alert {
     color: #BD4137;
 }
 
