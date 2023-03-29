@@ -71,9 +71,9 @@ function removeActiveClass() {
     })
 }
 
-function updateIndexPage() {
-    checkConnectStatus();
-}
+// update index pagesophie.bluel@test.tld
+checkConnectStatus();
+
 function checkConnectStatus() {
     let connexionParams = new URLSearchParams(document.location.search);
     let connexionStatus = connexionParams.get('connected');
@@ -83,9 +83,13 @@ function checkConnectStatus() {
     }
 }
 
-updateIndexPage()
-
 function displayHiddenEls() {
+    let editBtn = document.querySelector('.edit-bar');
+    editBtn.classList.remove('hidden');
+    editBtn.addEventListener('click', () => {
+        window.location.reload()
+    })
+
     document.querySelectorAll('.update-btn').forEach(btn => {
         btn.classList.remove('hidden');
         btn.addEventListener('click', () => {
@@ -110,18 +114,52 @@ function displayHiddenEls() {
 function displayModalGallery() {
     for( let i=0; i<works.length; i++) {
         document.querySelector('.modal__gallery').innerHTML += `
-        <figure>
+        <figure data-id="${works[i].id}">
             <a href="${works[i].imageUrl}">
                 <img src="${works[i].imageUrl}" alt="${works[i].title}"}>
             </a>
             <figcaption>
                 <span class="modal__icons">                
                     <i class="fa-solid fa-arrows-up-down-left-right grow-up"></i>
-                    <i class="fa-regular fa-trash-can"></i>
+                    <i class="fa-regular fa-trash-can delete-icon"></i>
                 </span>
                 <button>éditer</button>
             </figcaption>
         </figure>`
-    }           
+    }  
+    deleteProject()      
 }
 displayModalGallery()
+
+function deleteProject() {
+    let deleteBtns = document.querySelectorAll('.delete-icon');
+
+    for( let i=0; i<deleteBtns.length; i++) {
+        deleteBtns[i].addEventListener('click', () => {
+            let datasetId = Number(deleteBtns[i].closest('[data-id]').dataset.id)
+
+            deleteToAPI(datasetId);
+        })
+    }
+}
+function deleteToAPI(datasetId) {
+    fetch(`http://localhost:5678/api/works/${datasetId}`, {
+        method: 'DELETE',
+        headers: {  
+            'Authorization': `Bearer ${localStorage.getItem('token')}` 
+        } 
+    })
+    .then(function(res) {
+        if(res.ok) {
+            deleteToLocalStorage(datasetId);
+
+            document.querySelector('.modal__gallery').innerHTML = '';
+            works = JSON.parse(localStorage.getItem('works'));
+            displayModalGallery();
+        }
+    })
+}
+function deleteToLocalStorage(datasetId) {
+    works = works.filter(works => works.id !== datasetId);
+    localStorage.setItem('works', JSON.stringify(works));
+}

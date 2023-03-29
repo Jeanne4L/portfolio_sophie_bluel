@@ -61,7 +61,7 @@ header {
 section {
 	margin: 50px 0
 }
-input[type=submit], button {
+input[type=submit], button:not(.edit-btn) {
     font-family: 'Syne';
     font-weight: bold;
 }
@@ -112,6 +112,29 @@ a {
 .current {
     font-weight: bold;
 }
+
+.edit-bar {
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+.edit-mode {
+    color: white;
+}
+.edit-btn {
+    border-radius: 30px;
+    padding: 5px 10px;
+    border: none;
+    background-color: white;
+    margin-left: 15px;
+}
+
 header li img {
     width: 20px;
 }
