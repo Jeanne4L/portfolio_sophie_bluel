@@ -1,10 +1,9 @@
 let gallery = document.querySelector('.gallery');
 
 // Get and display works from API
-let works = localStorage.getItem('works');
+let works = JSON.parse(localStorage.getItem('works'));
 
 if (works !== null) {
-    works = JSON.parse(works);
     displayWorks(works);
 } else {
     getWorks();
@@ -87,7 +86,9 @@ function displayHiddenEls() {
     let editBtn = document.querySelector('.edit-bar');
     editBtn.classList.remove('hidden');
     editBtn.addEventListener('click', () => {
-        window.location.reload()
+        // window.location.reload()
+        gallery.innerHTML = '';
+        displayWorks(works);
     })
 
     document.querySelectorAll('.update-btn').forEach(btn => {
@@ -109,6 +110,7 @@ function displayHiddenEls() {
             }); 
         })
     })
+    deleteGallery();
 }
 
 function displayModalGallery() {
@@ -163,3 +165,15 @@ function deleteToLocalStorage(datasetId) {
     works = works.filter(works => works.id !== datasetId);
     localStorage.setItem('works', JSON.stringify(works));
 }
+
+function deleteGallery() {
+    let deleteAllBtn = document.querySelector('#delete-all');
+    deleteAllBtn.addEventListener('click', () => {
+        for(let i=0; i<works.length; i++) {
+            let datasetId = Number(works[i].id);
+
+            deleteToAPI(datasetId);
+        }
+    })
+}
+// localStorage.clear()
