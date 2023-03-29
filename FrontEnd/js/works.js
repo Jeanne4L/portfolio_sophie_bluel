@@ -35,7 +35,7 @@ function displayWorks(works) {
     }
 }
 
-// Sort works with filters
+// Sort works with filters buttons
 let allProjectsBtn = document.querySelector('.all-btn');
 allProjectsBtn.addEventListener('click', () => {    
     gallery.innerHTML = '';
@@ -70,9 +70,7 @@ function removeActiveClass() {
     })
 }
 
-// update index pagesophie.bluel@test.tld
-checkConnectStatus();
-
+// update index page
 function checkConnectStatus() {
     let connexionParams = new URLSearchParams(document.location.search);
     let connexionStatus = connexionParams.get('connected');
@@ -110,9 +108,9 @@ function displayHiddenEls() {
             }); 
         })
     })
-    deleteGallery();
+    displayModalGallery()
+    deleteAllProjects();
 }
-
 function displayModalGallery() {
     for( let i=0; i<works.length; i++) {
         document.querySelector('.modal__gallery').innerHTML += `
@@ -131,8 +129,8 @@ function displayModalGallery() {
     }  
     deleteProject()      
 }
-displayModalGallery()
 
+//  Delete projects
 function deleteProject() {
     let deleteBtns = document.querySelectorAll('.delete-icon');
 
@@ -165,8 +163,7 @@ function deleteToLocalStorage(datasetId) {
     works = works.filter(works => works.id !== datasetId);
     localStorage.setItem('works', JSON.stringify(works));
 }
-
-function deleteGallery() {
+function deleteAllProjects() {
     let deleteAllBtn = document.querySelector('#delete-all');
     deleteAllBtn.addEventListener('click', () => {
         for(let i=0; i<works.length; i++) {
@@ -176,4 +173,14 @@ function deleteGallery() {
         }
     })
 }
+
+// Add project
+function addProject() {
+    document.querySelector('#add').addEventListener('click', () => {
+        document.querySelector('.modal__container').innerHTML = `
+        
+        `
+    })
+}
+
 // localStorage.clear()
