@@ -121,7 +121,7 @@ function displayFirstModalContent(modalContainer) {
     modalGallery.classList.add('modal__gallery');
     modalContainer.appendChild(modalGallery);
 
-    displayModalGallery(modalGallery);
+    displayModalGallery();
 
     let hr = document.createElement('hr');
     modalContainer.appendChild(hr);
@@ -142,11 +142,14 @@ function displayFirstModalContent(modalContainer) {
     deleteBtn.textContent = 'Supprimer la galerie';
     btnsDiv.appendChild(deleteBtn);
 
-    updateModalContent(modalContainer);
+    document.querySelector('#add').addEventListener('click', () => {
+        displayAddModalContent(modalContainer);
+    })
     deleteAllProjects();
 }
-function displayModalGallery(modalGallery) {
+function displayModalGallery() {
     for( let i=0; i<works.length; i++) {
+        let modalGallery = document.querySelector('.modal__gallery');
         let figure = document.createElement('figure');
         figure.setAttribute('data-id', works[i].id);
         modalGallery.appendChild(figure);
@@ -227,98 +230,142 @@ function deleteAllProjects() {
 }
 
 // Add project
-function updateModalContent(modalContainer) {
-    document.querySelector('#add').addEventListener('click', () => {
+function displayAddModalContent(modalContainer) {
+    let h3 = document.querySelector('.modal__title');
+    h3.textContent = 'Ajout photo';
 
-        let h3 = document.querySelector('.modal__title');
-        h3.textContent = 'Ajout photo';
+    modalContainer.innerHTML = '';
 
-        modalContainer.innerHTML = '';
+    let form = document.createElement('form');
+    modalContainer.appendChild(form);
 
-        let form = document.createElement('form');
-        modalContainer.appendChild(form);
+    let photoContainer = document.createElement('div');
+    photoContainer.classList.add('add-photo__container');
+    form.appendChild(photoContainer);
+    
+    let i = document.createElement('i');
+    i.classList.add('fa-regular', 'fa-image');
+    photoContainer.appendChild(i);
 
-        let photoContainer = document.createElement('div');
-        photoContainer.classList.add('add-photo__container');
-        form.appendChild(photoContainer);
-        
-        let i = document.createElement('i');
-        i.classList.add('fa-regular', 'fa-image');
-        photoContainer.appendChild(i);
+    let btnsContainer = document.createElement('div');
+    btnsContainer.classList.add('add-photo__buttons');
+    photoContainer.appendChild(btnsContainer);
 
-        let btnsContainer = document.createElement('div');
-        btnsContainer.classList.add('add-photo__buttons');
-        photoContainer.appendChild(btnsContainer);
+    let fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.name = 'project-photo';
+    fileInput.id = 'project-photo';
+    fileInput.classList.add('hidden-add-btn');
+    fileInput.accept = 'image/png, image/jpg'
+    fileInput.required = 'true';
+    btnsContainer.appendChild(fileInput);
 
-        let fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.name = 'project-photo';
-        fileInput.id = 'project-photo';
-        fileInput.classList.add('hidden-add-btn');
-        btnsContainer.appendChild(fileInput);
+    let photoFile = document.querySelector('#project-photo');
 
-        let btn = document.createElement('button');
-        btn.classList.add('front-add-btn');
-        btn.textContent = '+ Ajouter photo';
-        btnsContainer.appendChild(btn);
+    photoFile.addEventListener('change', (e) => {
+        let fileList = e.target.files;
+        for (let file of fileList) {
+            let size = file.size;
+            let name = file.name;
+            if(size > '4194304') {
+                let p = document.createElement('p');
+                p.textContent = 'L\'image sélectionnée est trop lourde';
+                p.classList.add('alert');
+                photoContainer.appendChild(p);
+            } else {
+                let reader = new FileReader();
+                reader.addEventListener('load', (e) => {
+                    let img = document.createElement('img');
+                    img.src = e.target.result;
+                    photoContainer.innerHTML = '';
+                    photoContainer.style.padding = '0';
+                    photoContainer.appendChild(img);
+                });
+                reader.readAsDataURL(file);
 
-        let p = document.createElement('p');
-        p.textContent = 'jpg, png : 4mo max';
-        photoContainer.appendChild(p);
+                let regex = /\.jpg$|\.png$|-|_/g
+                name = name.replace(regex, ' ');
+                let title = document.querySelector('#title');
+                title.value = name;
 
-        let titleLabel = document.createElement('label');
-        titleLabel.textContent = 'Titre';
-        titleLabel.for = 'title';
-        form.appendChild(titleLabel);
+                title.addEventListener('input', () => {
+                    let select = document.querySelector('#category');
 
-        let titleInput = document.createElement('input');
-        titleInput.type = 'text';
-        titleInput.name = 'title';
-        titleInput.required = true;
-        titleInput.id = 'title';
-        form.appendChild(titleInput);
-
-        let categoryLabel = document.createElement('label');
-        categoryLabel.textContent = 'Catégorie';
-        categoryLabel.for = 'category';
-        form.appendChild(categoryLabel);
-
-        let categorySelect = document.createElement('select');
-        categorySelect.name = 'category';
-        categorySelect.required = true;
-        categorySelect.id = 'category';
-            let nullOption = document.createElement("option");
-            nullOption.selected = true;
-            nullOption.disabled = 'disabled' ;
-            nullOption.text = 'Sélectionner une catégorie';
-            categorySelect.add(nullOption);
-
-            fetchCategories();
-            let categories = JSON.parse(localStorage.getItem('categories'));
-
-            for( let i=0; i<categories.length; i++) {
-                let option = document.createElement("option");
-                option.value = categories[i].id;
-                option.text = categories[i].name;
-                categorySelect.add(option);
+                    title.addEventListener('input', () => {
+                        if (title.value !== null && select.value !== null) {
+                            let submitBtn = document.querySelector('#submit-btn');
+                            submitBtn.disabled = 'false';
+                            submitBtn.classList.remove('inactive-btn');
+                        }
+                    })
+                })
             }
-        form.appendChild(categorySelect);
+        }
+    })
 
-        let hr = document.createElement('hr');
-        modalContainer.appendChild(hr);
+    let btn = document.createElement('button');
+    btn.classList.add('front-add-btn');
+    btn.textContent = '+ Ajouter photo';
+    btnsContainer.appendChild(btn);
 
-        let submitBtn = document.createElement('input');
-        submitBtn.type = 'submit';
-        submitBtn.classList.add('btn', 'inactive-btn')
-        submitBtn.value = 'Valider';
-        modalContainer.appendChild(submitBtn);
+    let p = document.createElement('p');
+    p.textContent = 'jpg, png : 4mo max';
+    photoContainer.appendChild(p);
 
-        let prevArrow = document.querySelector('.js-prev-arrow');
-        prevArrow.style.opacity = '1';
-        prevArrow.addEventListener('click', () => {
-            modalContainer.innerHTML = '';
-            displayFirstModalContent(modalContainer);
-        })
+    let titleLabel = document.createElement('label');
+    titleLabel.textContent = 'Titre';
+    titleLabel.for = 'title';
+    form.appendChild(titleLabel);
+
+    let titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.name = 'title';
+    titleInput.id = 'title';
+    titleInput.required = 'true';
+    form.appendChild(titleInput);
+
+    let categoryLabel = document.createElement('label');
+    categoryLabel.textContent = 'Catégorie';
+    categoryLabel.for = 'category';
+    form.appendChild(categoryLabel);
+
+    let categorySelect = document.createElement('select');
+    categorySelect.name = 'category';
+    categorySelect.required = 'true';
+    categorySelect.id = 'category';
+        let nullOption = document.createElement("option");
+        nullOption.selected = 'true';
+        nullOption.disabled = 'disabled' ;
+        nullOption.text = 'Sélectionner une catégorie';
+        categorySelect.add(nullOption);
+
+        fetchCategories();
+        let categories = JSON.parse(localStorage.getItem('categories'));
+
+        for( let i=0; i<categories.length; i++) {
+            let option = document.createElement("option");
+            option.value = categories[i].id;
+            option.text = categories[i].name;
+            categorySelect.add(option);
+        }
+    form.appendChild(categorySelect);
+
+    let hr = document.createElement('hr');
+    modalContainer.appendChild(hr);
+
+    let submitBtn = document.createElement('input');
+    submitBtn.type = 'submit';
+    submitBtn.disabled = 'true';
+    submitBtn.id = 'submit-btn';
+    submitBtn.classList.add('btn', 'inactive-btn')
+    submitBtn.value = 'Valider';
+    modalContainer.appendChild(submitBtn);
+
+    let prevArrow = document.querySelector('.js-prev-arrow');
+    prevArrow.style.opacity = '1';
+    prevArrow.addEventListener('click', () => {
+        modalContainer.innerHTML = '';
+        displayFirstModalContent(modalContainer);
     })
 }
 async function fetchCategories() {

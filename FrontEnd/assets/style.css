@@ -298,14 +298,21 @@ header li img {
     padding: 20px;
     margin-bottom: 30px;
     border-radius: 5px;
+    height: 167.39px;
 }
 .add-photo__container .fa-image {
     color: #B9C5CC;
     font-size: 3rem;
 }
+.add-photo__container img {
+    height: 100%;
+}
 .add-photo__buttons {
     position: relative;
     margin: 20px 0 5px 0;
+}
+.add-photo__container > .alert {
+    margin-top: 10px;
 }
 .hidden-add-btn {
     position: absolute;
@@ -330,7 +337,7 @@ header li img {
 #modal input[type=text], #modal select {
     margin: 10px 0 20px 0;
     padding: 10px;
-    border: none;
+    border: solid 2px transparent;
     box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 .inactive-btn {
@@ -386,7 +393,7 @@ header li img {
 #contact input {
 	height: 50px;
 	font-size: 1.2em;
-	border: none;
+	border: solid 2px transparent;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 #contact label {
@@ -397,7 +404,7 @@ header li img {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-#contact input:focus, #login input:focus, #modal input:focus, #modal select:focus {
+#contact input:focus, #login input:focus, #modal input:focus:not(input[type=submit]:focus) , #modal select:focus {
     outline: none;
     border: solid 2px #1D6154;
 }
