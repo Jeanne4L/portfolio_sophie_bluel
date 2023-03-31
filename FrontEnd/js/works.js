@@ -1,15 +1,13 @@
 let gallery = document.querySelector('.gallery');
 
-// Get and display works from API
+// DISPLAY PROJECTS FROM API 
 let works = JSON.parse(localStorage.getItem('works'));
-
 if (works !== null) {
     displayWorks(works);
 } else {
     getWorks();
     displayWorks(works);
 }
-checkConnectStatus();
 
 async function getWorks() {
     let res = await fetch('http://localhost:5678/api/works');
@@ -18,7 +16,6 @@ async function getWorks() {
 
     localStorage.setItem('works', works);
 }
-
 function displayWorks(works) {
     for( let i=0; i<works.length; i++) {
         let figure = document.createElement('figure');
@@ -35,7 +32,7 @@ function displayWorks(works) {
     }
 }
 
-// Sort works with filters buttons
+// FILTER PROJECTS
 let allProjectsBtn = document.querySelector('.all-btn');
 allProjectsBtn.addEventListener('click', () => {    
     gallery.innerHTML = '';
@@ -63,22 +60,28 @@ function sortWorks( btn, category) {
         btn.classList.add('active');
     })
 }
-
 function removeActiveClass() {
     document.querySelectorAll('.filters-btn').forEach(btn => {
         btn.classList.remove('active')
     })
 }
 
-// update index page if connected
-function checkConnectStatus() {
-    let connexionParams = new URLSearchParams(document.location.search);
-    let connexionStatus = connexionParams.get('connected');
+// UPDATE INDEX PAGE IF CONNECTED
+let connexionParams = new URLSearchParams(document.location.search);
+let connexionStatus = connexionParams.get('connected');
 
-    if(connexionStatus === '1') {
-        displayHiddenEls()
-    }
+if(connexionStatus === '1') {
+    fetchCategories();
+    displayHiddenEls();
 }
+async function fetchCategories() {
+    let res = await fetch('http://localhost:5678/api/categories');
+    let categories = await res.json();
+    categories = JSON.stringify(categories);
+
+    localStorage.setItem('categories', categories);
+}
+
 function displayHiddenEls() {
     let editBtn = document.querySelector('.edit-bar');
     editBtn.classList.remove('hidden');
@@ -91,62 +94,81 @@ function displayHiddenEls() {
         btn.classList.remove('hidden');
         btn.addEventListener('click', () => {
             let modal = document.querySelector('#modal');
+            let isOpenedGalleryModal = false;
+
+            let addProjectModal = document.querySelector('#modal--add');
+            let isOpenedAddModal = false;
+
             let overlay = document.querySelector('.overlay');
 
-            openModal(modal, overlay);
+            openFirstModal(modal, isOpenedGalleryModal, addProjectModal, isOpenedAddModal, overlay);
         })
     })
-    let modalContainer = document.querySelector('.modal__container');
-
-    displayFirstModalContent(modalContainer);
 }
-function openModal(modal, overlay) {
-    modal.classList.remove('hidden');
-    overlay.classList.remove('hidden');
+function openModal(modalToOpen, isOpenedCurrentModal, otherModal, isOpenedOtherModal, overlay) {
+    modalToOpen.classList.remove('hidden');
+    if(overlay.classList.contains('hidden')) {
+        overlay.classList.remove('hidden');
+    }
 
-    document.querySelector('.js-close-modal').addEventListener('click', () => { 
-        closeModal(modal, overlay);
-    });
+    isOpenedCurrentModal = true;
+    isOpenedOtherModal = false;
+
+    closeModal(modalToOpen, isOpenedCurrentModal, otherModal, isOpenedOtherModal, overlay);
+}
+function closeModal(modalToClose, isOpenedCurrentModal, otherModal, isOpenedOtherModal, overlay) {
+    document.querySelectorAll('.js-close-modal').forEach(btn => {
+        btn.addEventListener('click', () => {
+            hideModal(modalToClose, isOpenedCurrentModal, otherModal, isOpenedOtherModal, overlay);
+        })
+    })
     overlay.addEventListener('click', () => {   
-        closeModal(modal, overlay);
+        hideModal(modalToClose, isOpenedCurrentModal, otherModal, isOpenedOtherModal, overlay);
     }); 
 }
-function closeModal(modal, overlay) {
-    modal.classList.add('hidden');
+function hideModal(modalToClose, isOpenedCurrentModal, otherModal, isOpenedOtherModal, overlay) {
+    if(isOpenedCurrentModal === true ) {
+        modalToClose.classList.add('hidden');
+        isOpenedOtherModal = false;
+    } else if(otherModal === true ){
+        isOpenedOtherModal.classList.add('hidden');
+        isOpenedCurrentModal = false;
+    }
     overlay.classList.add('hidden'); 
 }
 
-function displayFirstModalContent(modalContainer) {
-    let modalGallery = document.createElement('div');
-    modalGallery.classList.add('modal__gallery');
-    modalContainer.appendChild(modalGallery);
-
-    displayModalGallery();
-
-    let hr = document.createElement('hr');
-    modalContainer.appendChild(hr);
-
-    let btnsDiv = document.createElement('div');
-    btnsDiv.classList.add('modal__btns');
-    modalContainer.appendChild(btnsDiv);
-
-    let addBtn = document.createElement('button');
-    addBtn.classList.add('btn');
-    addBtn.id = 'add';
-    addBtn.textContent = 'Ajouter une photo';
-    btnsDiv.appendChild(addBtn);
-
-    let deleteBtn = document.createElement('button');
-    deleteBtn.classList.add('alert');
-    deleteBtn.id = 'delete-all';
-    deleteBtn.textContent = 'Supprimer la galerie';
-    btnsDiv.appendChild(deleteBtn);
+function openFirstModal(modal, isOpenedGalleryModal, addProjectModal, isOpenedAddModal, overlay) {
+    openModal(modal, isOpenedGalleryModal, addProjectModal, isOpenedAddModal, overlay);
 
     document.querySelector('#add').addEventListener('click', () => {
-        displayAddModalContent(modalContainer);
+        modal.classList.add('hidden');
+        openAddModal(modal, isOpenedGalleryModal, addProjectModal, isOpenedAddModal, overlay);
+        // // displayUploadFile();
     })
-    deleteAllProjects();
 }
+function openAddModal(modal, isOpenedGalleryModal, addProjectModal, isOpenedAddModal, overlay) {
+    openModal(addProjectModal, isOpenedAddModal, modal, isOpenedGalleryModal, overlay);
+
+    console.log(isOpenedAddModal)
+    let prevArrow = document.querySelector('.js-prev-arrow');
+    prevArrow.addEventListener('click', () => {
+        addProjectModal.classList.add('hidden');
+        openFirstModal(modal, isOpenedGalleryModal, addProjectModal, isOpenedAddModal, overlay);
+    })
+}
+
+
+
+// function createFirstModalContent(modalContainer) {
+
+//     displayModalGallery();
+
+//     document.querySelector('#add').addEventListener('click', () => {
+//         createAddModalContent(modalContainer);
+//         displayUploadFile();
+//     })
+//     deleteAllProjects();
+// }
 function displayModalGallery() {
     for( let i=0; i<works.length; i++) {
         let modalGallery = document.querySelector('.modal__gallery');
@@ -185,7 +207,7 @@ function displayModalGallery() {
     deleteProject();   
 }
 
-//  Delete projects
+//  DELETE PROJECT
 function deleteProject() {
     let deleteBtns = document.querySelectorAll('.delete-icon');
 
@@ -229,14 +251,15 @@ function deleteAllProjects() {
     })
 }
 
-// Add project
-function displayAddModalContent(modalContainer) {
+// ADD PROJECT
+function createAddModalContent(modalContainer) {
     let h3 = document.querySelector('.modal__title');
     h3.textContent = 'Ajout photo';
 
     modalContainer.innerHTML = '';
 
     let form = document.createElement('form');
+    form.id = 'add-form';
     modalContainer.appendChild(form);
 
     let photoContainer = document.createElement('div');
@@ -259,49 +282,6 @@ function displayAddModalContent(modalContainer) {
     fileInput.accept = 'image/png, image/jpg'
     fileInput.required = 'true';
     btnsContainer.appendChild(fileInput);
-
-    let photoFile = document.querySelector('#project-photo');
-
-    photoFile.addEventListener('change', (e) => {
-        let fileList = e.target.files;
-        for (let file of fileList) {
-            let size = file.size;
-            let name = file.name;
-            if(size > '4194304') {
-                let p = document.createElement('p');
-                p.textContent = 'L\'image sélectionnée est trop lourde';
-                p.classList.add('alert');
-                photoContainer.appendChild(p);
-            } else {
-                let reader = new FileReader();
-                reader.addEventListener('load', (e) => {
-                    let img = document.createElement('img');
-                    img.src = e.target.result;
-                    photoContainer.innerHTML = '';
-                    photoContainer.style.padding = '0';
-                    photoContainer.appendChild(img);
-                });
-                reader.readAsDataURL(file);
-
-                let regex = /\.jpg$|\.png$|-|_/g
-                name = name.replace(regex, ' ');
-                let title = document.querySelector('#title');
-                title.value = name;
-
-                title.addEventListener('input', () => {
-                    let select = document.querySelector('#category');
-
-                    title.addEventListener('input', () => {
-                        if (title.value !== null && select.value !== null) {
-                            let submitBtn = document.querySelector('#submit-btn');
-                            submitBtn.disabled = 'false';
-                            submitBtn.classList.remove('inactive-btn');
-                        }
-                    })
-                })
-            }
-        }
-    })
 
     let btn = document.createElement('button');
     btn.classList.add('front-add-btn');
@@ -334,12 +314,12 @@ function displayAddModalContent(modalContainer) {
     categorySelect.required = 'true';
     categorySelect.id = 'category';
         let nullOption = document.createElement("option");
+        nullOption.value = null;
         nullOption.selected = 'true';
         nullOption.disabled = 'disabled' ;
         nullOption.text = 'Sélectionner une catégorie';
         categorySelect.add(nullOption);
 
-        fetchCategories();
         let categories = JSON.parse(localStorage.getItem('categories'));
 
         for( let i=0; i<categories.length; i++) {
@@ -351,7 +331,7 @@ function displayAddModalContent(modalContainer) {
     form.appendChild(categorySelect);
 
     let hr = document.createElement('hr');
-    modalContainer.appendChild(hr);
+    form.appendChild(hr);
 
     let submitBtn = document.createElement('input');
     submitBtn.type = 'submit';
@@ -359,21 +339,101 @@ function displayAddModalContent(modalContainer) {
     submitBtn.id = 'submit-btn';
     submitBtn.classList.add('btn', 'inactive-btn')
     submitBtn.value = 'Valider';
-    modalContainer.appendChild(submitBtn);
+    form.appendChild(submitBtn);
 
     let prevArrow = document.querySelector('.js-prev-arrow');
     prevArrow.style.opacity = '1';
     prevArrow.addEventListener('click', () => {
         modalContainer.innerHTML = '';
-        displayFirstModalContent(modalContainer);
+        createFirstModalContent(modalContainer);
     })
 }
-async function fetchCategories() {
-    let res = await fetch('http://localhost:5678/api/categories');
-    let categories = await res.json();
-    categories = JSON.stringify(categories);
 
-    localStorage.setItem('categories', categories);
+
+function displayUploadFile() {
+    document.querySelector('#project-photo').addEventListener('change', () => {
+        let photoContainer = document.querySelector('.add-photo__container');
+
+        let file = document.querySelector('#project-photo').files[0];
+
+        if(file.size > '4194304') {
+            let p = document.createElement('p');
+            p.textContent = 'L\'image sélectionnée est trop lourde';
+            p.classList.add('alert', 'add-error');
+            photoContainer.appendChild(p);
+        } else {
+            if(document.querySelector('.add-error')) {
+                document.querySelector('.add-error').classList.add('hidden');
+            }
+
+            let formData = new FormData();
+            formData.append('image',document.querySelector('#project-photo').files[0]);
+            
+            readUploadFile(photoContainer, file);
+
+            checkInputValue(formData);
+        }
+
+    })
+}
+function readUploadFile(photoContainer, file) {
+    let reader = new FileReader();
+    reader.addEventListener('load', (e) => {
+        let img = document.createElement('img');
+        img.src = e.target.result;
+        photoContainer.innerHTML = '';
+        photoContainer.style.padding = '0';
+        photoContainer.appendChild(img);
+    });
+    reader.readAsDataURL(file);
+    convertFileNameToTitle(file.name);
+}
+function convertFileNameToTitle(name) {
+    let regex = /\.jpg$|\.png$|-|_/g
+    name = name.replace(regex, ' ');
+    let title = document.querySelector('#title');
+    title.value = name;
 }
 
+function checkInputValue(formData) {
+    category.addEventListener('input', (e) => {
+        if( document.querySelector('#title').value !== null && e.target.value !== null) {
+            let submitBtn = document.querySelector('#submit-btn');
+            submitBtn.removeAttribute('disabled');
+            submitBtn.classList.remove('inactive-btn');
+
+            getUploadFile(formData)
+        }
+    })
+}
+function getUploadFile(formData) {
+    let form = document.querySelector('#add-form');
+
+    form.addEventListener('submit', (e) =>{
+        e.preventDefault();
+        AddProjectToApi(formData);
+    });
+}
+function AddProjectToApi(formData){ 
+    
+    formData.append('title',document.querySelector('#title').value);
+    formData.append('category',document.querySelector("#category").value);
+
+    fetch('http://localhost:5678/api/works',{
+        method:'POST',
+        headers:{
+            'accept':'application/json',
+            'Authorization':`Bearer ${localStorage.getItem('token')}`
+        },
+        body:formData
+    })
+    .then(res => {
+        if(res.ok){
+            return res.json();
+        }
+    })
+    .then(work => {
+        
+    })
+}
 // localStorage.clear()
