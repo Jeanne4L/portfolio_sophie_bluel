@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-        <link rel="stylesheet" href="./assets/style.css">
+        <link rel="stylesheet" href="./assets/style.min.css">
     </head>
     <body>
         <div class="edit-bar hidden">
@@ -36,11 +36,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="./login.html">
+                        <a href="./login.html" class="log">
                             login
                         </a>
                     </li>
-                    <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+                    <li>
+                        <a href="#">
+                            <img src="./assets/icons/instagram.png" alt="Instagram">
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </header>
@@ -48,16 +52,16 @@
         <div class="overlay hidden"></div>
 
         <main>
-            <section id="introduction">
+            <div id="introduction">
                 <figure>
                     <img src="./assets/images/sophie-bluel.png" alt="">
-                    <div class="update-btn hidden">
+                    <div class="update-btn hidden" tabindex="0">
                         <i class="fa-regular fa-pen-to-square"></i>
                         modifier
                     </div>
                 </figure>
                 <div class="article-container">
-                    <div class="update-btn hidden">
+                    <div class="update-btn hidden" tabindex="0">
                         <i class="fa-regular fa-pen-to-square"></i>
                         modifier
                     </div>
@@ -68,19 +72,19 @@
                         <p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
                     </article>
                 </div>
-            </section>
+            </div>
             <section id="portfolio">
                 <div class="portfolio__title">
                     <h2>Mes Projets</h2>
-                    <div class="update-btn hidden">
+                    <div class="update-btn hidden" tabindex="0">
                         <i class="fa-regular fa-pen-to-square"></i>
                         modifier
                     </div>
                 </div>
 
-                <aside id="modal" class="modal hidden" tabindex="-1" role="dialog" aria-hidden="true" aria-modal="true" aria-labelledby="modal__title">
+                <div id="modal" class="modal hidden" tabindex="-1" role="dialog" aria-hidden="true" aria-modal="true" aria-labelledby="modal__title">
                     <i class="fa-solid fa-xmark js-close-modal" tabindex="0" role="button" aria-label="fermer la fenêtre"></i>
-                    <h3 class="modal__title">Galerie photo</h3>
+                    <h3 id="modal__title">Galerie photo</h3>
                     <div class="modal__container">
                         <div class="modal__gallery"></div>
                         <hr>
@@ -93,14 +97,14 @@
                             </button>
                         </div>
                     </div>
-                </aside>
+                </div>
 
-                <aside id="modal--add" class="modal hidden" tabindex="-1" role="dialog" aria-hidden="true" aria-modal="true" aria-labelledby="modal__title">
+                <div id="modal--add" class="modal hidden" tabindex="-1" role="dialog" aria-hidden="true" aria-modal="true" aria-labelledby="add-modal__title">
                     <div class="modal__icons">
                         <i class="fa-solid fa-arrow-left js-prev-arrow" tabindex="0" role="button" aria-label="retourner à la page précédente"></i>
                         <i class="fa-solid fa-xmark js-close-modal" tabindex="0" role="button" aria-label="fermer la fenêtre"></i>
                     </div>
-                    <h3 class="modal__title">Ajout photo</h3>
+                    <h3 id="add-modal__title">Ajout photo</h3>
                     <div class="modal__container">
                         <form id="add-form">
                             <div class="add-photo__container">
@@ -108,9 +112,9 @@
                                     <i class="fa-regular fa-image"></i>
                                     <div class="add-photo__buttons">
                                         <input type="file" name="project-photo" id="project-photo" class="hidden-add-btn" accept="image/png, image/jpeg" required>
-                                        <button class="front-add-btn">
+                                        <label for="project-photo" class="front-add-btn">
                                             + Ajouter photo
-                                        </button>
+                                        </label>
                                     </div>
                                     <p>
                                         jpg, png : 4mo max
@@ -121,15 +125,15 @@
                             <input type="text" name="title" id="title" required>
                             <label for="category">Catégorie</label>
                             <select name="category" id="category">
-                                <option value="null" selected="true" disabled="disabled">
+                                <option value="null" selected disabled="disabled">
                                     Sélectionner une catégorie
                                 </option>
                             </select>
                             <hr>
-                            <input type="submit" value="Valider" id="submit-btn" class="btn inactive-btn" disabled>
+                            <input type="submit" value="Valider" id="submit-btn" class="btn inactive-btn last-focus" disabled>
                         </form>
                     </div>
-                </aside>
+                </div>
 
                 <div class="filters">
                     <button class="filters-btn all-btn active">Tous</button>
@@ -162,6 +166,7 @@
             </nav>
         </footer>
 
-        <script src="./js/works.js"></script>
+        <script src="./js/min/works.min.js"></script> 
+
     </body>
 </html>

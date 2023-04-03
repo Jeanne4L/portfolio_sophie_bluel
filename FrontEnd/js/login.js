@@ -1,28 +1,47 @@
+let email = document.querySelector('#email');
+let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+document.querySelector('#email').addEventListener('change', (e) => {
+    if(emailRegex.test(e.target.value)){
+        document.querySelector('#email--error').classList.add('hidden');
+        email.classList.remove('input-alert');
+    } else {
+        document.querySelector('#email--error').classList.remove('hidden');
+        email.classList.add('input-alert');
+    }
+});
+
 document.querySelector('#login').addEventListener('submit', (e) => {
     e.preventDefault();
 
     let formData = {
-        email: document.querySelector('#email').value,
+        email: email.value,
         password : document.querySelector('#password').value
-    }
+    };
 
-    fetch('http://localhost:5678/api/users/login', {
-        method: 'POST',
-        headers: { 
-            'Accept': 'application/json', 
-            'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(function(res) {
-        if(res.ok) {
-            return res.json();
+    fetchUserToken(formData);
+});
+
+async function fetchUserToken(formData) {
+    try {
+        let res = await fetch('http://localhost:5678/api/users/login', {
+            method: 'POST',
+            headers: { 
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if(res.ok){
+            let userInfo = await res.json();
+
+            localStorage.setItem('token', userInfo.token);
+            document.location.href="./index.html?connected=1"; 
         } else {
-            document.querySelector('.form-error').classList.remove('hidden')
+            document.querySelector('.form-error').classList.remove('hidden');
         }
-    })
-    .then(function(userInfo) {
-        localStorage.setItem('token', userInfo.token);
-        document.location.href="./index.html?connected=1"; 
-    })
-})
+    } catch (error) {
+        console.error(error);
+    };
+};

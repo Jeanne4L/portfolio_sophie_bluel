@@ -4,6 +4,7 @@ let modal = document.querySelector('#modal');
 let addProjectModal = document.querySelector('#modal--add');
 let overlay = document.querySelector('.overlay');
 let photoContainer = document.querySelector('.add-photo__container');
+let submitAddBtn = document.querySelector('#submit-btn');
 
 
 // DISPLAY PROJECTS FROM API 
@@ -18,11 +19,15 @@ if (works !== null) {
 fetchCategories();
 
 async function fetchWorks() {
-    let res = await fetch('http://localhost:5678/api/works');
-    let works = await res.json();
-    works = JSON.stringify(works);
-
-    localStorage.setItem('works', works);
+    try {
+        let res = await fetch('http://localhost:5678/api/works');
+        let works = await res.json();
+        works = JSON.stringify(works);
+    
+        localStorage.setItem('works', works);
+    } catch(error) {
+        console.error(error);
+    }
 };
 function displayWorks(works) {
     for( let i=0; i<works.length; i++) {
@@ -44,11 +49,15 @@ function displayWorks(works) {
     }
 };
 async function fetchCategories() {
-    let res = await fetch('http://localhost:5678/api/categories');
-    let categories = await res.json();
-    categories = JSON.stringify(categories);
-
-    localStorage.setItem('categories', categories);
+    try {
+        let res = await fetch('http://localhost:5678/api/categories');
+        let categories = await res.json();
+        categories = JSON.stringify(categories);
+    
+        localStorage.setItem('categories', categories);
+    } catch(error) {
+        console.error(error);
+    }
 };
 
 
@@ -93,6 +102,7 @@ let connexionStatus = connexionParams.get('connected');
 
 if(connexionStatus === '1') {
     displayHiddenEls();
+    deleteAllProjects();
 
     let formData = new FormData();
 
@@ -116,20 +126,26 @@ function displayHiddenEls() {
     }
 
     let editBtn = document.querySelector('.edit-bar');
-    document.querySelector('header').style.marginTop = '50px';
+    document.querySelector('header').style.marginTop = '55px';
     editBtn.classList.remove('hidden');
     editBtn.addEventListener('click', () => {
         updateGallery(works, allProjectsBtn) 
     })
 
+    document.querySelector('.log').textContent = 'logout';
+
     document.querySelectorAll('.update-btn').forEach(btn => {
         btn.classList.remove('hidden');
         btn.addEventListener('click', () => {
-            openFirstModal(modal, overlay);
+            openGalleryModal(modal, overlay);
+            let growUpIcons = document.querySelectorAll('.grow-up');
+            for(let i=0; i<growUpIcons.length; i++) {
+                growUpIcons[0].focus();
+            }
         })
     })
 };
-function openFirstModal(modal, overlay) {
+function openGalleryModal(modal, overlay) {
     openModal(modal, overlay);
     displayModalGallery();
 
@@ -137,9 +153,6 @@ function openFirstModal(modal, overlay) {
         modal.classList.add('hidden');
         openAddModal(modal, overlay);
     })
-    
-    deleteProject(); 
-    deleteAllProjects();
 };
 function openAddModal(modal, overlay) {
     openModal(addProjectModal, overlay);
@@ -147,7 +160,7 @@ function openAddModal(modal, overlay) {
     let prevArrow = document.querySelector('.js-prev-arrow');
     prevArrow.addEventListener('click', () => {
         addProjectModal.classList.add('hidden');
-        openFirstModal(modal, overlay);
+        openGalleryModal(modal, overlay);
     })
 };
 function openModal(modalToOpen, overlay) {
@@ -155,6 +168,7 @@ function openModal(modalToOpen, overlay) {
     if(overlay.classList.contains('hidden')) {
         overlay.classList.remove('hidden');
     }
+    document.querySelector('body').style.overflow='hidden';
 
     closeModal(modalToOpen, overlay);
 };
@@ -170,8 +184,8 @@ function closeModal(modalToClose, overlay) {
 };
 function hideModal(modalToClose, overlay) {
     modalToClose.classList.add('hidden');
-
     overlay.classList.add('hidden'); 
+    document.querySelector('body').style.overflow='visible';
 
     history.pushState("", document.title, window.location.pathname + window.location.search);
 };
@@ -195,22 +209,26 @@ function displayModalGallery() {
         span.classList.add('modal__icons');
         figcaption.appendChild(span);
 
-        let a = document.createElement('a');
-        a.href = works[i].imageUrl;
-        span.appendChild(a);
+        let growUp = document.createElement('a');
+        growUp.href = works[i].imageUrl;
+        growUp.className = 'grow-up';
+        span.appendChild(growUp);
 
-        let growUp = document.createElement('i');
-        growUp.classList.add('fa-solid', 'fa-arrows-up-down-left-right', 'grow-up');
-        a.appendChild(growUp);
+        let growUpIcon = document.createElement('i');
+        growUpIcon.classList.add('fa-solid', 'fa-arrows-up-down-left-right');
+        growUp.appendChild(growUpIcon);
 
         let deleteIcon = document.createElement('i');
         deleteIcon.classList.add('fa-regular', 'fa-trash-can', 'delete-icon');
+        deleteIcon.setAttribute('tabindex', '0');
         span.appendChild(deleteIcon);
 
         let editBtn = document.createElement('button');
         editBtn.textContent = 'éditer';
+        editBtn.className = 'update-project';
         figcaption.appendChild(editBtn);
     }  
+    deleteProject(); 
 };
 
 //  DELETE PROJECT
@@ -226,17 +244,21 @@ function deleteProject() {
     }
 };
 async function deleteToAPI(datasetId) {
-    let res = await fetch(`http://localhost:5678/api/works/${datasetId}`, {
-        method: 'DELETE',
-        headers: {  
-            'Authorization': `Bearer ${localStorage.getItem('token')}` 
-        } 
-    });
-    if(res.ok) {
-        deleteToLocalStorage(datasetId);
-
-        works = JSON.parse(localStorage.getItem('works'));
-        displayModalGallery();
+    try {
+        let res = await fetch(`http://localhost:5678/api/works/${datasetId}`, {
+            method: 'DELETE',
+            headers: {  
+                'Authorization': `Bearer ${localStorage.getItem('token')}` 
+            } 
+        });
+        if(res.ok) {
+            deleteToLocalStorage(datasetId);
+    
+            works = JSON.parse(localStorage.getItem('works'));
+            displayModalGallery();
+        }
+    } catch (error){
+        console.error(error);
     }
 };
 function deleteToLocalStorage(datasetId) {
@@ -244,6 +266,8 @@ function deleteToLocalStorage(datasetId) {
     localStorage.setItem('works', JSON.stringify(works));
 };
 function deleteAllProjects() {
+    modalGallery.innerHTML = '';
+    
     let deleteAllBtn = document.querySelector('#delete-all');
     deleteAllBtn.addEventListener('click', () => {
         for(let i=0; i<works.length; i++) {
@@ -290,10 +314,9 @@ function convertFileNameToTitle(name) {
 };
 function checkInputValue() {
     document.querySelector('#category').addEventListener('change', (e) => {
-        if( document.querySelector('#title').value !== null && e.target.value !== null) {
-            let submitBtn = document.querySelector('#submit-btn');
-            submitBtn.removeAttribute('disabled');
-            submitBtn.classList.remove('inactive-btn');
+        if( document.querySelector('#title').value !== null && e.target.value !== null && document.querySelector('#project-photo').value !== '') {
+            submitAddBtn.removeAttribute('disabled');
+            submitAddBtn.classList.remove('inactive-btn');
         }
     })
 };
@@ -327,9 +350,8 @@ async function AddProjectToApi(formData){
             hideModal(addProjectModal, overlay);
             updateGallery(works, allProjectsBtn);
 
-            let submitBtn = document.querySelector('#submit-btn');
-            submitBtn.classList.add('inactive-btn');
-            submitBtn.setAttribute('disabled', 'disabled');
+            submitAddBtn.classList.add('inactive-btn');
+            submitAddBtn.setAttribute('disabled', 'disabled');
 
             document.querySelector('#add-form').reset();
             document.querySelector('.add-photo__content').classList.remove('hidden');

@@ -58,6 +58,12 @@ table {
     padding: 12px;
     border: none;
 }
+.btn:hover, .btn:focus-visible, #contact input:focus, #contact textarea:focus, #contact input[type=submit]:hover, #delete-all:focus-visible, #login input:focus, .modal input:focus , .modal select:focus, #title:focus, :focus-visible, .hidden-add-btn:focus-visible {
+    outline: none;
+    color:#1D6154;
+    background-color: white;
+    border: solid 2px #1D6154;
+}
 
 /** end reset css**/
 body {
@@ -88,13 +94,14 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
 }
 
 h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
+    color: #ab633a;
 }
 
 h2{
@@ -144,11 +151,14 @@ a {
 .edit-btn {
     border-radius: 30px;
     padding: 5px 10px;
-    border: none;
+    border: solid 2px transparent;
     background-color: white;
     margin-left: 15px;
 }
 
+header a {
+    display: inline-block;
+}
 header li img {
     width: 20px;
 }
@@ -165,11 +175,13 @@ header li img {
 #introduction img, #introduction .update-btn {
 	width: 80%;
 }
+.update-btn {
+    padding: 5px;
+}
 #introduction .update-btn {
     padding: 10px 0;
     margin-bottom: 10px;
 }
-
 #introduction .article-container {
 	flex: 1;
     display: flex;
@@ -262,7 +274,7 @@ header li img {
 .modal__gallery .grow-up {
     opacity: 0;
 }
-.modal__gallery figure:hover > figcaption .grow-up {
+.modal__gallery figure:hover > figcaption .grow-up, .grow-up:focus {
     opacity: 1;
 }
 .modal__gallery img {
@@ -275,7 +287,7 @@ header li img {
 }
 .modal__gallery button {
     margin: 0;
-    padding: 0;
+    padding: 5px 0;
     border: none;
     background-color: transparent;
     text-align: left;
@@ -333,15 +345,17 @@ header li img {
     opacity: 0;
 }
 .front-add-btn {
+    display: inline-block;
+    text-align: center;
     width: 185px;
     margin: auto;
     padding: 12px;
     background-color: #CBD6DC;
     border-radius: 50px;
     color: #306685;
-    border: none;
+    font-weight: bold;
 }
-.modal label {
+label {
     text-align: left;
 }
 .modal input[type=text], .modal select {
@@ -349,6 +363,8 @@ header li img {
     padding: 10px;
     border: solid 2px transparent;
     box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    height: 45px;
+    font-size: 1em;
 }
 .inactive-btn {
     background: #A7A7A7;
@@ -402,7 +418,7 @@ header li img {
 	flex-direction: column;
 }
 
-#contact input {
+input, select {
 	height: 50px;
 	font-size: 1.2em;
 	border: solid 2px transparent;
@@ -412,15 +428,9 @@ header li img {
 	margin: 2em 0 1em 0;
 }
 #contact textarea {
-	border: none;
+	border: solid 2px transparent;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-
-#contact input:focus, #login input:focus, .modal input:focus:not(input[type=submit]:focus) , .modal select:focus {
-    outline: none;
-    border: solid 2px #1D6154;
-}
-
 
 footer nav ul {
 	display: flex;
@@ -437,6 +447,12 @@ footer nav ul {
 }
 .alert {
     color: #BD4137;
+}
+.input-alert {
+    border-color: #BD4137;
+}
+#email--error {
+    margin-top: 5px;
 }
 
 .hidden {
@@ -465,6 +481,9 @@ footer nav ul {
         width: 90%;
         margin-top: 20px;
     }
+    #contact {
+        width: 70%;
+    }
 }
 @media (max-width: 600px) {
     header {
@@ -480,7 +499,7 @@ footer nav ul {
         justify-content: space-evenly;
     }
     h1 {
-        margin: 45px 0;
+        margin-top: 45px;
     }
 
     #introduction {
@@ -492,6 +511,23 @@ footer nav ul {
     }
     .gallery img {
         height: 300px;
+    }
+
+    .modal {
+        width: 100%;
+        min-width: 300px;
+        height: 100%;
+        padding-top: 55px;     
+        border-radius: 0;
+    }
+    .modal__gallery {
+        grid-template-columns: 1fr 1fr;
+    }
+    .modal__container {
+        width: 95%;
+    }
+    .modal__gallery .grow-up {
+        opacity: 1;
     }
 
     #contact {
