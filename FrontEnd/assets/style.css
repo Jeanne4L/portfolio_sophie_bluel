@@ -69,7 +69,7 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+    margin: 5px 0 50px 0;
 }
 section {
 	margin: 50px 0
@@ -78,7 +78,7 @@ input[type=submit], button:not(.edit-btn) {
     font-family: 'Syne';
     font-weight: bold;
 }
-input[type="submit"]:hover, input[type=file]:hover, button:hover, li:hover, li a:hover {
+input[type="submit"]:hover, input[type=file]:hover, button:hover, li:hover, li a:hover, .update-btn {
     cursor: pointer;
 }
 
@@ -132,12 +132,11 @@ a {
     justify-content: center;
     padding: 10px;
     align-items: center;
+    max-width: 1140px;
     position: fixed;
     z-index: 10;
-    top: 0;
     width: 100%;
-    max-width: 1140px;
-    margin: auto;
+    top: 0;
 }
 .edit-mode {
     color: white;
@@ -167,13 +166,14 @@ header li img {
 	width: 80%;
 }
 #introduction .update-btn {
-    display: inline-block;
     padding: 10px 0;
     margin-bottom: 10px;
 }
 
-#introduction article {
-	flex: 1
+#introduction .article-container {
+	flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 #introduction h2 {
 	margin-bottom: 1em;
@@ -302,10 +302,12 @@ header li img {
 }
 .add-photo__container {
     background-color: #E8F1F6;
-    padding: 20px;
     margin-bottom: 30px;
     border-radius: 5px;
     height: 191.5px;
+}
+.add-photo__content {
+    margin: 20px;
 }
 .add-photo__container .fa-image {
     color: #B9C5CC;
@@ -379,6 +381,8 @@ header li img {
 }
 .gallery img {
 	width: 100%;
+    height: 480px;
+    object-fit: cover;
 }
 #contact {
 	width: 50%;
@@ -437,4 +441,61 @@ footer nav ul {
 
 .hidden {
     display: none;
+}
+
+@media(max-width: 900px) {
+    .gallery img {
+        height: 400px;
+    }
+    .gallery {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 750px) {
+    #introduction {
+        flex-direction: column;
+    }
+    #introduction figure {
+        flex-direction: column-reverse;
+    }
+    #introduction img, #introduction .update-btn {
+        width: 100%;
+    }
+    #introduction .article-container {
+        width: 90%;
+        margin-top: 20px;
+    }
+}
+@media (max-width: 600px) {
+    header {
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        align-items: center;
+    }
+    header nav, header ul {
+        width: 100%;
+    }
+    header ul {
+        display: flex;
+        justify-content: space-evenly;
+    }
+    h1 {
+        margin: 45px 0;
+    }
+
+    #introduction {
+        margin-top: 20px;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+    .gallery img {
+        height: 300px;
+    }
+
+    #contact {
+        width: 90%;
+        margin-top: 20px;
+    }
 }

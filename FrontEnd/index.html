@@ -51,29 +51,31 @@
             <section id="introduction">
                 <figure>
                     <img src="./assets/images/sophie-bluel.png" alt="">
-                    <a href="#" class="update-btn hidden">
+                    <div class="update-btn hidden">
                         <i class="fa-regular fa-pen-to-square"></i>
                         modifier
-                    </a>
+                    </div>
                 </figure>
-                <article>
-                    <a href="#modal" class="update-btn hidden">
+                <div class="article-container">
+                    <div class="update-btn hidden">
                         <i class="fa-regular fa-pen-to-square"></i>
                         modifier
-                    </a>
-                    <h2>Designer d'espace</h2>
-                    <p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
-                    <p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
-                    <p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
-                </article>
+                    </div>
+                    <article>
+                        <h2>Designer d'espace</h2>
+                        <p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
+                        <p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
+                        <p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
+                    </article>
+                </div>
             </section>
             <section id="portfolio">
                 <div class="portfolio__title">
                     <h2>Mes Projets</h2>
-                    <a href="#modal" class="update-btn hidden">
+                    <div class="update-btn hidden">
                         <i class="fa-regular fa-pen-to-square"></i>
                         modifier
-                    </a>
+                    </div>
                 </div>
 
                 <aside id="modal" class="modal hidden" tabindex="-1" role="dialog" aria-hidden="true" aria-modal="true" aria-labelledby="modal__title">
@@ -102,16 +104,18 @@
                     <div class="modal__container">
                         <form id="add-form">
                             <div class="add-photo__container">
-                                <i class="fa-regular fa-image"></i>
-                                <div class="add-photo__buttons">
-                                    <input type="file" name="project-photo" id="project-photo" class="hidden-add-btn" accept="image/png, image/jpg" required>
-                                    <button class="front-add-btn">
-                                        + Ajouter photo
-                                    </button>
+                                <div class="add-photo__content">
+                                    <i class="fa-regular fa-image"></i>
+                                    <div class="add-photo__buttons">
+                                        <input type="file" name="project-photo" id="project-photo" class="hidden-add-btn" accept="image/png, image/jpeg" required>
+                                        <button class="front-add-btn">
+                                            + Ajouter photo
+                                        </button>
+                                    </div>
+                                    <p>
+                                        jpg, png : 4mo max
+                                    </p>
                                 </div>
-                                <p>
-                                    jpg, png : 4mo max
-                                </p>
                             </div>
                             <label for="title">Titre</label>
                             <input type="text" name="title" id="title" required>
@@ -122,7 +126,7 @@
                                 </option>
                             </select>
                             <hr>
-                            <input type="submit" value="Valider" disabled="true" class="btn inactive-btn">
+                            <input type="submit" value="Valider" id="submit-btn" class="btn inactive-btn" disabled>
                         </form>
                     </div>
                 </aside>
