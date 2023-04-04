@@ -2,6 +2,7 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+/******************  GENERAL  *********************/
 * {
     box-sizing: border-box;
 }
@@ -133,6 +134,7 @@ a {
     font-weight: bold;
 }
 
+/******************  EDIT BAR  *********************/
 .edit-bar {
     background-color: #000;
     display: flex;
@@ -156,12 +158,15 @@ a {
     margin-left: 15px;
 }
 
+/******************  HEADER  *********************/
 header a {
     display: inline-block;
 }
 header li img {
     width: 20px;
 }
+
+/******************  INTRODUCTION  *********************/
 #introduction {
 	display: flex;
 	align-items: center;
@@ -195,6 +200,7 @@ header li img {
 	margin-bottom: 0.5em;
 }
 
+/******************  PORTFOLIO  *********************/
 .portfolio__title {
     display: flex;
     justify-content: center;
@@ -205,6 +211,7 @@ header li img {
 	margin-right: 20px;
 }
 
+/********  OVERLAY  **********/
 .overlay {
     position: fixed;
     top: 0;
@@ -214,6 +221,7 @@ header li img {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
+/********  MODAL  ***********/
 #modal {
     text-align: right;
 }
@@ -308,6 +316,7 @@ header li img {
     background-color: transparent;
 }
 
+/*********  ADD MODAL  *********/
 .modal form {
     display: flex;
     flex-direction: column;
@@ -370,6 +379,7 @@ label {
     background: #A7A7A7;
 }
 
+/******************  FILTERS  *********************/
 .filters {
     text-align: center;
     margin-bottom: 30px;
@@ -387,6 +397,7 @@ label {
     color: white;
 }
 
+/******************  PORTFOLIO  *********************/
 .gallery {
 	width: 100%;
 	display: grid;
@@ -400,6 +411,8 @@ label {
     height: 480px;
     object-fit: cover;
 }
+
+/******************  CONTACT  *********************/
 #contact {
 	width: 50%;
     margin: auto;
@@ -432,12 +445,14 @@ input, select {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+/******************  FOOTER  *********************/
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em
 }
 
+/*******  STATE CLASSES  **********/
 .link {
     text-decoration: underline;
     font-size: 0.9rem;
@@ -459,6 +474,8 @@ footer nav ul {
     display: none;
 }
 
+/******************  MEDIA QUERIES  *********************/
+/*******  TABLET  **********/
 @media(max-width: 900px) {
     .gallery img {
         height: 400px;
@@ -485,6 +502,8 @@ footer nav ul {
         width: 70%;
     }
 }
+
+/*******  MOBILE  **********/
 @media (max-width: 600px) {
     header {
         flex-direction: column-reverse;

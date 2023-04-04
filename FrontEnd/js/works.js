@@ -18,6 +18,7 @@ if (works !== null) {
 };
 fetchCategories();
 
+// GET PROJECTS QUERY
 async function fetchWorks() {
     try {
         let res = await fetch('http://localhost:5678/api/works');
@@ -48,6 +49,8 @@ function displayWorks(works) {
         figure.appendChild(figcaption);
     }
 };
+
+// GET CATEGORIES QUERY
 async function fetchCategories() {
     try {
         let res = await fetch('http://localhost:5678/api/categories');
@@ -83,6 +86,7 @@ function updateGallery(worksToDisplay, btn) {
     gallery.innerHTML = '';
     displayWorks(worksToDisplay);
 
+    // CHANGE STYLE OF ACTIVE FILTER BTN
     document.querySelectorAll('.filters-btn').forEach(btn => {
         btn.classList.remove('active');
     })
@@ -118,6 +122,7 @@ if(connexionStatus === '1') {
 
 // MODAL
 function displayHiddenEls() {
+    // DISPLAY CATEGORIES INTO SELECT
     for( let i=0; i<categories.length; i++) {
         let option = document.createElement("option");
         option.value = categories[i].id;
@@ -125,6 +130,7 @@ function displayHiddenEls() {
         document.querySelector('#category').add(option);
     }
 
+    // DISPLAY EDIT BAR 
     let editBtn = document.querySelector('.edit-bar');
     document.querySelector('header').style.marginTop = '55px';
     editBtn.classList.remove('hidden');
@@ -134,6 +140,7 @@ function displayHiddenEls() {
 
     document.querySelector('.log').textContent = 'logout';
 
+    // DISPLAY UPDATE BTN 
     document.querySelectorAll('.update-btn').forEach(btn => {
         btn.classList.remove('hidden');
         btn.addEventListener('click', () => {
@@ -149,6 +156,7 @@ function openGalleryModal(modal, overlay) {
     openModal(modal, overlay);
     displayModalGallery();
 
+    // IF ADD BTN CLICK DISPLAY ADD MODAL
     document.querySelector('#add').addEventListener('click', () => {
         modal.classList.add('hidden');
         openAddModal(modal, overlay);
@@ -157,6 +165,7 @@ function openGalleryModal(modal, overlay) {
 function openAddModal(modal, overlay) {
     openModal(addProjectModal, overlay);
 
+    // IF PREVIOUS BTN CLICK DISPLAY GALLERY MODAL
     let prevArrow = document.querySelector('.js-prev-arrow');
     prevArrow.addEventListener('click', () => {
         addProjectModal.classList.add('hidden');
@@ -187,6 +196,7 @@ function hideModal(modalToClose, overlay) {
     overlay.classList.add('hidden'); 
     document.querySelector('body').style.overflow='visible';
 
+    // REMOVE THE MODAL HASH FROM THE URL
     history.pushState("", document.title, window.location.pathname + window.location.search);
 };
 function displayModalGallery() {
@@ -278,8 +288,9 @@ function deleteAllProjects() {
     })
 };
 
-// ADD PROJECT
+// ADD PROJECT CHECK AND DISPLAY
 function checkUploadFile(file, formData) {
+    // CHECK FILE SIZE < 4MO
     if(file.size > '4194304') {
         let p = document.createElement('p');
         p.textContent = 'L\'image sélectionnée est trop lourde';
@@ -320,6 +331,8 @@ function checkInputValue() {
         }
     })
 };
+
+// ADD FORM SUBMIT
 function sendForm(formData) {
     let form = document.querySelector('#add-form');
     
@@ -342,10 +355,12 @@ async function AddProjectToApi(formData){
         });
 
         if(res.ok){
+            // PUSH NEW PROJECT INTO LOCALSTORAGE
             let work = await res.json();
             works.push(work);
             localStorage.setItem('works', works);
 
+            // REMOVE MODAL AND DISPLAY PORTFOLIO
             fetchWorks();
             hideModal(addProjectModal, overlay);
             updateGallery(works, allProjectsBtn);
@@ -353,10 +368,12 @@ async function AddProjectToApi(formData){
             submitAddBtn.classList.add('inactive-btn');
             submitAddBtn.setAttribute('disabled', 'disabled');
 
+            // RESET ADD FORM
             document.querySelector('#add-form').reset();
             document.querySelector('.add-photo__content').classList.remove('hidden');
             document.querySelector('#upload').remove();
 
+            // REMOVE FORMDATA CONTENT
             for (let key of formData.keys()) {
                 formData.delete(key);
             }

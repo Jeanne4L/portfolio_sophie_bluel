@@ -1,3 +1,4 @@
+// CHECk INPUT VALID
 let email = document.querySelector('#email');
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -11,6 +12,7 @@ document.querySelector('#email').addEventListener('change', (e) => {
     }
 });
 
+// FORM SUBMIT
 document.querySelector('#login').addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -22,6 +24,7 @@ document.querySelector('#login').addEventListener('submit', (e) => {
     fetchUserToken(formData);
 });
 
+// CONNECTION QUERY
 async function fetchUserToken(formData) {
     try {
         let res = await fetch('http://localhost:5678/api/users/login', {

@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="./assets/style.min.css">
     </head>
     <body>
+        <!-- EDIT BAR -->
         <div class="edit-bar hidden">
             <div class="edit-mode">
                 <i class="fa-regular fa-pen-to-square"></i>
@@ -21,6 +22,7 @@
             </div>
             <button class="edit-btn">publier les changements</button>
         </div>
+
         <header>
             <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
             <nav>
@@ -52,6 +54,7 @@
         <div class="overlay hidden"></div>
 
         <main>
+            <!-- INTRODUCTION -->
             <div id="introduction">
                 <figure>
                     <img src="./assets/images/sophie-bluel.png" alt="">
@@ -73,6 +76,8 @@
                     </article>
                 </div>
             </div>
+
+            <!-- PORTFOLIO -->
             <section id="portfolio">
                 <div class="portfolio__title">
                     <h2>Mes Projets</h2>
@@ -82,6 +87,7 @@
                     </div>
                 </div>
 
+                <!-- MODAL -->
                 <div id="modal" class="modal hidden" tabindex="-1" role="dialog" aria-hidden="true" aria-modal="true" aria-labelledby="modal__title">
                     <i class="fa-solid fa-xmark js-close-modal" tabindex="0" role="button" aria-label="fermer la fenêtre"></i>
                     <h3 id="modal__title">Galerie photo</h3>
@@ -98,7 +104,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div id="modal--add" class="modal hidden" tabindex="-1" role="dialog" aria-hidden="true" aria-modal="true" aria-labelledby="add-modal__title">
                     <div class="modal__icons">
                         <i class="fa-solid fa-arrow-left js-prev-arrow" tabindex="0" role="button" aria-label="retourner à la page précédente"></i>
@@ -134,7 +139,8 @@
                         </form>
                     </div>
                 </div>
-
+                
+                <!-- FILTERS -->
                 <div class="filters">
                     <button class="filters-btn all-btn active">Tous</button>
                     <button class="filters-btn objects-btn">Objets</button>
@@ -143,6 +149,8 @@
                 </div>
                 <div class="gallery"></div>
             </section>
+
+            <!-- CONTACT -->
             <section id="contact">
                 <h2>Contact</h2>
                 <p>Vous avez un projet ? Discutons-en !</p>
