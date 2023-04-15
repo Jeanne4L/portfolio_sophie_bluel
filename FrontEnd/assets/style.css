@@ -57,9 +57,9 @@ table {
 	text-align: center;
 	border-radius: 60px ;
     padding: 12px;
-    border: none;
+    border: solid 2px #1D6154;
 }
-.btn:hover, .btn:focus-visible, #contact input:focus, #contact textarea:focus, #contact input[type=submit]:hover, #delete-all:focus-visible, #login input:focus, .modal input:focus , .modal select:focus, #title:focus, :focus-visible, .hidden-add-btn:focus-visible {
+.btn:hover:not(.inactive-btn), .btn:focus-visible, #contact input:focus, #contact textarea:focus, #contact input[type=submit]:hover, #delete-all:focus-visible, #login input:focus, .modal input:focus , .modal select:focus, #title:focus, :focus-visible, .hidden-add-btn:focus-visible {
     outline: none;
     color:#1D6154;
     background-color: white;
@@ -307,7 +307,6 @@ header li img {
     flex-direction: column;
 }
 .modal__btns button {
-    border: none;
     padding: 10px 20px;
 }
 .modal__btns button.alert {
@@ -377,6 +376,7 @@ label {
 }
 .inactive-btn {
     background: #A7A7A7;
+    border-color:#A7A7A7;
 }
 
 /******************  FILTERS  *********************/

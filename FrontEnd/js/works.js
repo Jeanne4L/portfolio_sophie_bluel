@@ -298,24 +298,26 @@ function checkUploadFile(file, formData) {
         photoContainer.appendChild(p);
     } else {
         if(document.querySelector('.add-error')) {
-            document.querySelector('.add-error').classList.add('hidden');
+            document.querySelector('.add-error').remove();
         }
 
         formData.set('image',document.querySelector('#project-photo').files[0]);
     }
 };
 function displayUploadFile(file) {
-    let reader = new FileReader();
-    reader.addEventListener('load', (e) => {
-        let img = document.createElement('img');
-        img.src = e.target.result;
-        img.id = 'upload';
-        document.querySelector('.add-photo__content').classList.add('hidden');
-        photoContainer.style.padding = '0';
-        photoContainer.appendChild(img);
-    });
-    reader.readAsDataURL(file);
-    convertFileNameToTitle(file.name);
+    if(file.size < '4194304') {
+        let reader = new FileReader();
+        reader.addEventListener('load', (e) => {
+            let img = document.createElement('img');
+            img.src = e.target.result;
+            img.id = 'upload';
+            document.querySelector('.add-photo__content').classList.add('hidden');
+            photoContainer.style.padding = '0';
+            photoContainer.appendChild(img);
+        });
+        reader.readAsDataURL(file);
+        convertFileNameToTitle(file.name);
+    }
 };
 function convertFileNameToTitle(name) {
     let regex = /\.jpg$|\.png$|-|_/g;
