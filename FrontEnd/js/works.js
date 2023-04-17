@@ -101,10 +101,9 @@ function sortWorks( btn, categoryId) {
 
 
 // UPDATE INDEX PAGE IF CONNECTED
-let connexionParams = new URLSearchParams(document.location.search);
-let connexionStatus = connexionParams.get('connected');
+let token = localStorage.getItem('token');
 
-if(connexionStatus === '1') {
+if(token && token !== null) {
     displayHiddenEls();
     deleteAllProjects();
 
@@ -118,6 +117,10 @@ if(connexionStatus === '1') {
     })
     checkInputValue();
     sendForm(formData);
+
+    document.querySelector('.log').addEventListener('click', ()=> {
+        localStorage.removeItem('token');
+    })
 };
 
 // MODAL

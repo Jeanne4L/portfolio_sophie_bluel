@@ -40,7 +40,8 @@ async function fetchUserToken(formData) {
             let userInfo = await res.json();
 
             localStorage.setItem('token', userInfo.token);
-            document.location.href="./index.html?connected=1"; 
+            window.location.href="./index.html"; 
+
         } else {
             document.querySelector('.form-error').classList.remove('hidden');
         }
